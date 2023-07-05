@@ -1,0 +1,28 @@
+import serial
+import time
+
+# Establish serial communication with the motor controller
+ser = serial.Serial('/dev/ttyUSB0', 9600)  # Replace with the appropriate serial port and baud rate
+
+# Function to move the stepper motor
+def move_motor(steps):
+    command = f"M{steps}\n"  # Command format for the motor controller
+    ser.write(command.encode())  # Send the command to the motor controller
+    time.sleep(0.5)  # Delay to allow the motor to complete the movement
+
+# Example usage:
+if __name__ == '__main__':
+    try:
+        # Move the motor 100 steps forward
+        move_motor(100)
+        
+        # Pause for 1 second
+        time.sleep(1)
+
+        # Move the motor 50 steps backward
+        move_motor(-50)
+
+        # Close the serial connection
+        ser.close()
+    except serial.SerialException:
+        print("Serial port communication error.")
